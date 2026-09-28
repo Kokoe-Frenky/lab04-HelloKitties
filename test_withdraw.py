@@ -1,8 +1,14 @@
-def test_withdraw_100(funded_account):
-    funded_account.withdraw(100)
-    assert funded_account.balance == 900
+import pytest
+from bank import BankAccount
 
+@pytest.fixture
+def account():
+    return BankAccount(100)
 
-def test_withdraw_500(funded_account):
-    funded_account.withdraw(500)
-    assert funded_account.balance == 500
+def test_withdraw(account):
+    account.withdraw(50)
+    assert account.balance == 50
+
+def test_overdraft(account):
+    with pytest.raises(ValueError):
+        account.withdraw(150)
